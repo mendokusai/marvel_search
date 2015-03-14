@@ -7,7 +7,12 @@
 		<p>URL: <%= @url %></p>
 	<% end %>
 
+	<% if @parsedurl %>
+		<%= @parsedurl %>
+	<% end %>
+
 	<% if @response %>
+		<p><%= @response["code"] %></p>
 		<p>RESPONSE: <%= @response %></p>
 	<% end %>
 

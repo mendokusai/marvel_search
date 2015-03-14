@@ -3,18 +3,31 @@
 class ComicsController < ApplicationController
 		
 	def index
-		apikey= "&apikey=d8c9ccab08d4170328675a86bf56d5b8"
-		@url = "http://gateway.marvel.com:80/v1/public/" +
-		params[:lib] + 
-		"?name=" + params[:search] + apikey
+		if params[:lib] || params[:search]
+			timestamp = Time.now.seconds_since_midnight()
+			ts = timestamp.to_s
+			apikey= "d8c9ccab08d4170328675a86bf56d5b8"
+			baseurl = "http://gateway.marvel.com/v1/public/"
+			key = ENV['MARVEL_API_KEY']
 
-		response = HTTParty.get(@url)
+			hash = Digest::MD5.hexdigest(ts + key + apikey)
+			
+			
+			url = baseurl + params[:lib] + 
+				"?ts=" + ts +
+				"&apikey=" + apikey +
+				"&hash=" + hash
+				if params[:search]
+					url = url + "&name=" + params[:search]
+				end
 
-		@response = JSON.parse(response.body)
-		
+			@parsedurl = url
+
+			
+
+			response = HTTParty.get(url)
+			@response = JSON.parse(response.body)
+		end
 	end
 
-		# def search
-			
-		# end
 end
