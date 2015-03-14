@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :comics
 
+  'comics#search'
+
   root 'comics#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

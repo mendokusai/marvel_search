@@ -1,3 +1,39 @@
 <h3>Marvel Comic Search</h3>
 
+<%= render 'form' %>
+
+<div id="container">
+	<% if @url %>
+		<p>URL: <%= @url %></p>
+	<% end %>
+
+	<% if @response %>
+		<p>RESPONSE: <%= @response %></p>
+	<% end %>
+
+</div>
+
+<!-- 
 <p>Public Key: 8c9ccab08d4170328675a86bf56d5b8</p>
+
+if there are more than 1000 calls, stop them for a hour
+
+types of resources:
+1 comics (by name)
+2 comic series (groups of comics)
+3 Comic Stories (components of comics?)
+4 Events and Crossovers 
+5 Creators (artists)
+6 Characters 
+
+HTTP GET request
+
+successful will have 'etag' http header
+make 'if-none-match' http header
+	to protect from subsequent requests to same url
+		response code will come back with empty body and '304' not modified
+
+
+Example Request
+
+Request Url: http://gateway.marvel.com/v1/public/comics Request Method: GET Params: {   "apikey": "your api key",   "ts": "a timestamp",   "hash": "your hash" } Headers: {   Accept: */* } -->
