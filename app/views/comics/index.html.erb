@@ -5,6 +5,7 @@
 <center><div class="throbber">
     Loading...
 </div></center>
+
 <div id="container">
 	<% if @link %>
 	<img src="<%= @link['data']['results'][0]['images'][0]['path'] %>.<%= @link['data']['results'][0]['images'][0]['extension'] %>" width="30%"/>
@@ -26,48 +27,44 @@
 	
 
 <% else %>
-	<% if @url %>
-		<p>URL: <%= @url %></p>
-	<% end %>
-
-	<% if @parsedurl %>
-		<%= @parsedurl %>
-	<% end %>
-
 	<% if @response %>
 		<p><%#= @response["code"] %></p>
 		<% if @response["data"]["results"] %>
-		<h2><%= @response["data"]["results"][0]["name"] %></h2>
-		<p><%= @response["data"]["results"][0]["description"] %></p>
-		<h4>Comics Featuring <%= @response["data"]["results"][0]["name"] %></h4>
-		<ul>
-		<% @response["data"]["results"][0]["comics"]["items"].each do |i| %>
-			<li>
-				<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
-			</li>
+			<% if @response["data"]["results"].any? %>
+				<h2><%= @response["data"]["results"][0]["name"] %></h2>
+				<p><%= @response["data"]["results"][0]["description"] %></p>
+				<h4>Comics Featuring <%= @response["data"]["results"][0]["name"] %></h4>
+				<ul>
+				<% @response["data"]["results"][0]["comics"]["items"].each do |i| %>
+					<li>
+						<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
+					</li>
 
-		<% end %>
-		</ul>
+				<% end %>
+				</ul>
 
-		<h4>Series Featuring <%= @response["data"]["results"][0]["name"] %></h4>
-		<ul>
-		<% @response["data"]["results"][0]["series"]["items"].each do |i| %>
-			<li>
-				<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
-			</li>
-		<% end %>
-		</ul>
+				<h4>Series Featuring <%= @response["data"]["results"][0]["name"] %></h4>
+				<ul>
+				<% @response["data"]["results"][0]["series"]["items"].each do |i| %>
+					<li>
+						<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
+					</li>
+				<% end %>
+				</ul>
 
-		<h4>Stories Featuring <%= @response["data"]["results"][0]["name"] %></h4>
-		<ul>
-		<% @response["data"]["results"][0]["stories"]["items"].each do |i| %>
-			<li>
-				<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
-			</li>
+				<h4>Stories Featuring <%= @response["data"]["results"][0]["name"] %></h4>
+				<ul>
+				<% @response["data"]["results"][0]["stories"]["items"].each do |i| %>
+					<li>
+						<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
+					</li>
 
-		<% end %>
-		</ul>
-	<% end %>
+				<% end %>
+				</ul>
+				<% else %>
+				<center><p>Hmm... No Results were found.</p></center>
+				<% end %>
+			<% end %>
 <% else %>
 		<p><%= @response %></p>
 	<% end %>
