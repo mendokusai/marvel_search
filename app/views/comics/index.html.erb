@@ -2,6 +2,9 @@
 
 <%= render 'form' %>
 
+<center><div class="throbber">
+    Loading...
+</div></center>
 <div id="container">
 	<% if @link %>
 	<img src="<%= @link['data']['results'][0]['images'][0]['path'] %>.<%= @link['data']['results'][0]['images'][0]['extension'] %>" width="30%"/>
