@@ -1,8 +1,28 @@
-<h3>Marvel Comic Search</h3>
+<h3 id="top">Marvel Comic Character Search</h3>
 
 <%= render 'form' %>
 
 <div id="container">
+	<% if @link %>
+	<img src="<%= @link['data']['results'][0]['images'][0]['path'] %>.<%= @link['data']['results'][0]['images'][0]['extension'] %>" width="30%"/>
+
+	<h3><%= @link['data']['results'][0]['title'] %></h3>
+	<h5>Issue Number: <%= @link['data']['results'][0]['issueNumber'] %> (# <%= @link['data']['results'][0]['id'] %>)</h5>
+	<p><%= @link['data']['results'][0]['description'] %></p>
+	<ul>
+	<% @link['data']['results'][0]['urls'].each do |i| %>
+		<li><a href="<%= i['url'] %>"><%= i['type'] %></a></li>
+	<% end %>
+	</ul>
+	<h5>Creators</h5>
+	<ul>
+	<% @link['data']['results'][0]['creators']['items'].each do |i| %>
+	<li><%=i['name']%> <%=i['role']%></li>
+	<% end %>
+</ul>
+	
+
+<% else %>
 	<% if @url %>
 		<p>URL: <%= @url %></p>
 	<% end %>
@@ -12,33 +32,42 @@
 	<% end %>
 
 	<% if @response %>
-		<p><%= @response["code"] %></p>
-		<p>RESPONSE: <%= @response %></p>
+		<p><%#= @response["code"] %></p>
+		<% if @response["data"]["results"] %>
+		<h2><%= @response["data"]["results"][0]["name"] %></h2>
+		<p><%= @response["data"]["results"][0]["description"] %></p>
+		<h4>Comics Featuring <%= @response["data"]["results"][0]["name"] %></h4>
+		<ul>
+		<% @response["data"]["results"][0]["comics"]["items"].each do |i| %>
+			<li>
+				<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
+			</li>
+
+		<% end %>
+		</ul>
+
+		<h4>Series Featuring <%= @response["data"]["results"][0]["name"] %></h4>
+		<ul>
+		<% @response["data"]["results"][0]["series"]["items"].each do |i| %>
+			<li>
+				<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
+			</li>
+		<% end %>
+		</ul>
+
+		<h4>Stories Featuring <%= @response["data"]["results"][0]["name"] %></h4>
+		<ul>
+		<% @response["data"]["results"][0]["stories"]["items"].each do |i| %>
+			<li>
+				<a value='<%=i["resourceURI"] %>' href='<%=i["resourceURI"] %>'><%= i["name"] %></a>
+			</li>
+
+		<% end %>
+		</ul>
 	<% end %>
+<% else %>
+		<p><%= @response %></p>
+	<% end %>
+<% end %>
 
 </div>
-
-<!-- 
-<p>Public Key: 8c9ccab08d4170328675a86bf56d5b8</p>
-
-if there are more than 1000 calls, stop them for a hour
-
-types of resources:
-1 comics (by name)
-2 comic series (groups of comics)
-3 Comic Stories (components of comics?)
-4 Events and Crossovers 
-5 Creators (artists)
-6 Characters 
-
-HTTP GET request
-
-successful will have 'etag' http header
-make 'if-none-match' http header
-	to protect from subsequent requests to same url
-		response code will come back with empty body and '304' not modified
-
-
-Example Request
-
-Request Url: http://gateway.marvel.com/v1/public/comics Request Method: GET Params: {   "apikey": "your api key",   "ts": "a timestamp",   "hash": "your hash" } Headers: {   Accept: */* } -->
