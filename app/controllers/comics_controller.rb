@@ -18,15 +18,19 @@ class ComicsController < ApplicationController
 				"&apikey=" + @apikey +
 				"&hash=" + hash
 				if params[:search]
-					#add bit to handle two-name names
-					url = url + "&name=" + params[:search]
+					split_search = params[:search].split(' ')
+						if split_search.length > 1
+							url = url + "&nameStartsWith=" + split_search[0]
+						else
+							url = url + "&name=" + split_search[0]
+						end
 				end
 
 			@parsedurl = url
 			response = HTTParty.get(url)
 			@response = JSON.parse(response.body)
 		end
-		
+
 		if params[:links]
 			baseurl = params[:links]
 			ts = params[:nts]
